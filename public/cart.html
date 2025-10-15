@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cart — Gosus</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-container">
+        <div id="logo"><h1 class="brand">Gosus</h1></div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="contact.html">Contact</a>
+          <a href="cart.html">Cart</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="cart-section">
+        <h2>Your cart</h2>
+        <div class="cart-grid">
+          <div>
+            <div id="cart-list">Loading cart...</div>
+          </div>
+          <aside id="cart-summary" class="card" style="display:none">
+            <h3>Order summary</h3>
+            <div class="summary-line"><span>Subtotal</span><span>$<span id="cart-total">0.00</span></span></div>
+            <div class="summary-line"><span>Shipping</span><span>—</span></div>
+            <div class="summary-line total"><span>Total</span><span>$<span id="cart-total-dup">0.00</span></span></div>
+            <button id="checkout-btn" class="btn">Proceed to Checkout</button>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+    // cart helper: populate with dummy items if empty
+    (function(){
+      function formatMoney(n){return n.toFixed(2)}
+      const cartKey = 'cart';
+      let cart = JSON.parse(localStorage.getItem(cartKey)||'[]');
+      if (!cart || cart.length===0) {
+        cart = [
+          {id:'prod-1', title:'Forest Bottle', price:24.99, qty:1, img:'Images/greenb.png'},
+          {id:'prod-2', title:'Sunset Bottle', price:29.50, qty:1, img:'Images/orangeb.png'},
+        ];
+        localStorage.setItem(cartKey, JSON.stringify(cart));
+      }
+
+      const list = document.getElementById('cart-list');
+      function render(){
+        if (!cart.length) {
+          list.innerHTML = '<div class="cart-list-empty"><h3>Your cart is empty</h3><p>Looks like you haven\'t added anything yet.</p><p><a href="products.html" class="btn" style="display:inline-block;margin-top:10px">Browse products</a></p></div>';
+          document.getElementById('cart-summary').style.display='none';
+          return
+        }
+        document.getElementById('cart-summary').style.display='block';
+        list.innerHTML = cart.map((it, idx)=>`
+          <div class="cart-row card" data-idx="${idx}">
+            <div class="img-wrap"><img src="${it.img}" alt="${it.title}" class="cart-img" /></div>
+            <div class="cart-meta">
+              <h4>${it.title}</h4>
+              <div class="muted">Coral Orange</div>
+            </div>
+            <div class="cart-price">$${formatMoney(it.price)}</div>
+            <div class="cart-controls">
+              <button class="qty-minus" data-idx="${idx}">−</button>
+              <span class="qty">${it.qty}</span>
+              <button class="qty-plus" data-idx="${idx}">＋</button>
+            </div>
+            <button class="trash" data-idx="${idx}" aria-label="Remove">🗑️</button>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('.qty-plus').forEach(b=> b.addEventListener('click', e=>{ const i=parseInt(e.target.dataset.idx,10); cart[i].qty = (cart[i].qty||1)+1; saveAndRender(); }));
+        document.querySelectorAll('.qty-minus').forEach(b=> b.addEventListener('click', e=>{ const i=parseInt(e.target.dataset.idx,10); cart[i].qty = Math.max(1,(cart[i].qty||1)-1); saveAndRender(); }));
+        document.querySelectorAll('.trash').forEach(b=> b.addEventListener('click', e=>{ const i=parseInt(e.target.dataset.idx,10); cart.splice(i,1); saveAndRender(); }));
+
+        const total = cart.reduce((s,it)=> s + it.price * (it.qty||1), 0);
+        document.getElementById('cart-total').textContent = formatMoney(total);
+        document.getElementById('cart-total-dup').textContent = formatMoney(total);
+      }
+      function saveAndRender(){ localStorage.setItem(cartKey, JSON.stringify(cart)); render(); }
+      render();
+
+      // no add-suggestion buttons on this page
+
+      document.getElementById('checkout-btn').addEventListener('click', ()=> alert('This is a demo checkout — integrate payment in production.'))
+    })();
+    </script>
+  </body>
+</html>

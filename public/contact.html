@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact Us — Sustain Bottles</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-container">
+        <div id="logo">
+          <h1 class="brand">Gosus</h1>
+        </div>
+        <div class="navdiv">
+          <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="contact.html" id="nav-contact">Contact</a>
+            <a href="login.html" id="login-link">Login</a>
+            <a href="signup.html" id="signup-link">Sign up</a>
+            <a href="#admin" id="admin-link">Admin</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style=" font-family: sans-serif; color: greenyellow; padding:40px 20px;">
+      <h2>Contact Us</h2>
+
+  <section style="max-width:700px;margin:0 auto 40px; width:100%;">
+        <div class="form-card">
+          <form id="contact-page-form">
+            <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" required></div>
+            <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" required></div>
+            <div class="field"><label for="c-message">Message</label><textarea id="c-message" name="message" rows="6" required></textarea></div>
+            <div class="field"><button class="btn" type="submit">Send Message</button></div>
+          </form>
+          <p id="contact-page-msg" class="form-msg"></p>
+        </div>
+      </section>
+
+      <hr />
+
+      <h3>Complaint / Report an issue</h3>
+  <section style="max-width:700px;margin:0 auto; width:100%;">
+        <div class="form-card">
+          <form id="complaint-form">
+            <div class="field"><label for="co-name">Your name</label><input id="co-name" name="name" required></div>
+            <div class="field"><label for="co-email">Your email</label><input id="co-email" name="email" type="email" required></div>
+            <div class="field"><label for="co-order">Order ID (optional)</label><input id="co-order" name="orderId"></div>
+            <div class="field"><label for="co-message">Complaint</label><textarea id="co-message" name="message" rows="6" required></textarea></div>
+            <div class="field"><button class="btn" type="submit">Submit Complaint</button></div>
+          </form>
+          <p id="complaint-msg" class="form-msg"></p>
+        </div>
+      </section>
+      
+      <hr />
+      <h3>Site Feedback</h3>
+      <p>Share a quick thought — bug, suggestion, or compliment.</p>
+      <section style="max-width:700px;margin:0 auto; width:100%; margin-bottom:40px;">
+        <div class="form-card">
+          <form id="feedback-form">
+            <div class="field two-col">
+              <div>
+                <label for="fb-type">Type</label>
+                <select id="fb-type" name="type" required>
+                  <option value="suggestion">Suggestion</option>
+                  <option value="bug">Bug</option>
+                  <option value="compliment">Compliment</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="fb-rating">Rating (optional)</label>
+                <select id="fb-rating" name="rating">
+                  <option value="">—</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label for="fb-message">Message</label><textarea id="fb-message" name="message" rows="4" required></textarea></div>
+            <div class="field"><label for="fb-email">Email (optional)</label><input id="fb-email" name="email" type="email"></div>
+            <div class="field"><button class="btn" type="submit">Send Feedback</button></div>
+          </form>
+          <p id="feedback-msg" class="form-msg"></p>
+        </div>
+      </section>
+    </main>
+
+  <script src="main.js"></script>
+  </body>
+</html>

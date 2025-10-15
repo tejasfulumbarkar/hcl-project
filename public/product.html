@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Product — Sustain Bottles</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .product-grid{display:flex;gap:24px;align-items:flex-start;justify-content:center;padding:40px}
+      .product-image img{max-width:480px;width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.4)}
+      .product-info{max-width:540px}
+      .product-info h2{font-size:2rem;margin:0 0 10px}
+      .price{color:#2a7f4a;font-size:1.4rem}
+      .desc{margin-top:12px;line-height:1.6}
+      .category{margin-top:14px;color:#666}
+      @media(max-width:800px){.product-grid{flex-direction:column;padding:20px}.product-image img{max-width:100%}}
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-container">
+        <div id="logo"><h1 class="brand">Gosus</h1></div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="contact.html">Contact</a>
+          <a href="login.html" id="login-link">Login</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div id="product-detail">Loading product...</div>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>

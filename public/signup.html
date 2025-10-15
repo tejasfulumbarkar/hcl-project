@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign up — Sustain Bottles</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-container container">
+        <h1 class="brand">Gosus</h1>
+        <nav>
+          <a href="/">Home</a>
+          <a href="login.html">Login</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="card form-card" style="max-width:480px;margin:48px auto;">
+        <h2 style="color: aliceblue;">Create account</h2>
+        <form id="signup-form">
+          <input name="name" placeholder="Full name" required />
+          <input name="email" type="email" placeholder="Email" required />
+          <input name="password" type="password" placeholder="Password" required />
+          <button class="btn" type="submit">Sign up</button>
+        </form>
+        <div id="signup-msg"></div>
+      </section>
+    </main>
+  <script src="main.js"></script>
+  </body>
+</html>

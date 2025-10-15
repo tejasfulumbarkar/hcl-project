@@ -1,0 +1,479 @@
+.header-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    
+    margin-top: 5px;
+}
+
+
+body{
+    background-color: #242A1F;
+    position: relative;
+    /* allow scrolling and interactions */
+    overflow: auto;
+}
+
+/* Background animated glowing blobs */
+.bg-blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-blobs .blob{position:absolute;display:block;border-radius:50%;filter:blur(40px);opacity:0.6;mix-blend-mode:screen}
+.bg-blobs .b1{width:420px;height:420px;background:radial-gradient(circle at 30% 30%, #3de08a, #1e6b4a);left:-10%;top:10%;animation:move1 12s linear infinite}
+.bg-blobs .b2{width:360px;height:360px;background:radial-gradient(circle at 70% 30%, #69d2ff, #2a7fa6);right:-8%;top:20%;animation:move2 16s linear infinite}
+.bg-blobs .b3{width:520px;height:520px;background:radial-gradient(circle at 40% 60%, #ffd36b, #b27a2a);left:10%;bottom:-15%;animation:move3 18s linear infinite}
+.bg-blobs .b4{width:300px;height:300px;background:radial-gradient(circle at 60% 40%, #ff8fb3, #a8526e);right:20%;bottom:-10%;animation:move4 14s linear infinite}
+
+@keyframes move1{0%{transform:translate(0,0)scale(1)}25%{transform:translate(8vw,-6vh)scale(1.05)}50%{transform:translate(0,-10vh)scale(1)}75%{transform:translate(-6vw,-4vh)scale(.98)}100%{transform:translate(0,0)scale(1)}}
+@keyframes move2{0%{transform:translate(0,0)scale(1)}25%{transform:translate(-6vw,4vh)scale(1.02)}50%{transform:translate(6vw,8vh)scale(1)}75%{transform:translate(3vw,2vh)scale(.98)}100%{transform:translate(0,0)scale(1)}}
+@keyframes move3{0%{transform:translate(0,0)scale(1)}25%{transform:translate(-8vw,-4vh)scale(1.03)}50%{transform:translate(0,-6vh)scale(1)}75%{transform:translate(6vw,-2vh)scale(.97)}100%{transform:translate(0,0)scale(1)}}
+@keyframes move4{0%{transform:translate(0,0)scale(1)}25%{transform:translate(6vw,6vh)scale(1.02)}50%{transform:translate(-4vw,10vh)scale(1)}75%{transform:translate(-2vw,4vh)scale(.98)}100%{transform:translate(0,0)scale(1)}}
+
+/* Ensure page content sits above blobs */
+.site-header, .container, .site-footer{position:relative;z-index:5}
+
+
+.joti-one-regular {
+  font-family: "Joti One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+#leaf{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.brand {
+    font-size: 2rem;
+    color: #e6e7e8;
+    padding-left: 20px;
+    margin: 0;
+    font-family: 'Joti One', cursive;
+}
+
+nav {
+
+    margin: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+nav a {
+    color: #e6e7e8;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    font-family: sans-serif;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    color: #5EED7D;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure the hero section has enough height so overlapping images don't cover the next section */
+#hero, .hero {
+    position: relative; /* keep absolute-positioned bubbles and bottles anchored to the hero */
+    min-height: 82vh;   /* push content so user can scroll to the next section */
+    padding: 60px 20px 100px; /* extra bottom padding so bottles sit comfortably */
+    box-sizing: border-box;
+    overflow: visible; /* allow soft separator and gentle overflow if needed */
+}
+
+/* make sure the hero image group doesn't push into the next section visually */
+#hero_bottles{z-index:2}
+#l_bubble, #r_bubble{z-index:1}
+
+
+.league-spartan-hero {
+  font-family: "League Spartan", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+#l_bubble{
+    position: absolute;
+    left: 0px;
+    top: 60px;
+    
+    
+}
+
+
+#r_bubble{
+    position: absolute;
+    right: 0px;
+    top: 60px;
+    
+    
+    
+}
+
+/* center the bottles within the hero and make their size responsive */
+#hero_bottles{
+    position:absolute;
+    left: 20%;
+    top: 41%;
+    width: 60%;
+    max-width: 980px;
+    height: auto;
+    z-index: 2;
+}
+
+/* a subtle fade/separator at the bottom of the hero to visually separate sections */
+.hero::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 120px;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(36,42,31,0) 0%, rgba(36,42,31,1) 60%); /* fade to page bg */
+}
+
+@keyframes float {
+    0% {
+        transform: translatey(0);
+    }
+    50% {
+        transform: translatey(-10px);
+    }
+    100% {
+        transform: translatey(0);
+    }
+}
+
+/* Hero button layout: parent centers the button, the anchor is the clickable button */
+#hero_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero_btn_frame{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Style the anchor as the actual button and handle hover on it directly */
+.btn, #hero_btn a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5EED7D;
+    color: #242A1F;
+    padding: 12px 26px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.15s ease, color 0.25s ease;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+}
+
+.btn:hover, #hero_btn a:hover {
+    background-color: #2770ba;
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* Generic card used for forms and product tiles */
+.card{background:rgba(255,255,255,0.03);border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(2,6,23,0.6);backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,0.03)}
+.form-card input,.form-card textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#e6e7e8;margin:8px 0}
+.form-card button.btn{width:auto;padding:10px 18px}
+
+/* Contact / form card layout */
+.form-card{padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;border:1px solid rgba(255,255,255,0.04);max-width:700px;margin:0 auto;box-sizing:border-box;} 
+.form-card .field{display:flex;flex-direction:column;margin-bottom:12px}
+.form-card label{color:#dfe7dd;font-weight:600;margin-bottom:6px}
+.form-card input, .form-card textarea{font-size:1rem}
+.form-card .btn{background:#5EED7D;color:#102116;padding:12px 18px;border-radius:10px;font-weight:800}
+.form-msg{margin-top:8px;color:#a9f5be}
+
+@media (min-width:800px){
+    .form-card .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+}
+
+/* Products grid */
+.product-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:12px}
+.product-card{border-radius:12px;padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 22px rgba(2,6,23,0.6);overflow:hidden}
+.product-card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+.product-card h4{margin:10px 0 6px;color:#fff}
+.product-card p{color:rgba(255,255,255,0.7);font-size:14px}
+.product-card .price{color:#5EED7D;font-weight:700;margin-top:8px}
+
+/* clickable product links that wrap cards */
+.product-link{display:block;text-decoration:none;color:inherit}
+.product-link .card{transition:transform .12s ease,box-shadow .12s ease}
+.product-link .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,0.6)}
+
+/* product detail helper */
+.product-grid{display:flex;gap:24px;align-items:flex-start;justify-content:center;padding:40px}
+.product-image img{max-width:480px;width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.4)}
+.product-info{max-width:540px}
+
+/* Features cards under Why Choose Us */
+.features{padding:40px 20px 70px}
+.features-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;max-width:1200px;margin:20px auto}
+.feature-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:26px;text-align:center;color:#e6e7e8;box-shadow:0 10px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+.feature-card .icon{font-size:36px;margin-bottom:12px}
+.feature-card h3{margin:8px 0 10px;color:#fff;font-size:1.15rem;font-family:'League Spartan', sans-serif}
+.feature-card p{color:rgba(255,255,255,0.78);line-height:1.6;font-size:0.96rem;font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif}
+
+@media(max-width:980px){.features-inner{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.features-inner{grid-template-columns:1fr}.feature-card{padding:20px}}
+
+/* Testimonials */
+.testimonials{padding:48px 20px 80px}
+.test-inner{max-width:1100px;margin:0 auto;text-align:center}
+.test-inner h2{font-family:'League Spartan', sans-serif;color:#5EED7D;font-size:2rem;margin-bottom:18px}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testimonial{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:12px;box-shadow:0 8px 22px rgba(2,6,23,0.5);color:rgba(255,255,255,0.92)}
+.testimonial .avatar{width:64px;height:64px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3de08a,#2a7fa6);font-size:28px;color:#052018;margin-bottom:12px}
+.testimonial .quote{font-style:italic;color:rgba(255,255,255,0.88);line-height:1.6;margin:12px 0}
+.testimonial strong{display:block;margin-top:8px}
+.testimonial .role{color:rgba(255,255,255,0.6);font-family: sans-serif;font-size:0.9rem}
+
+@media(max-width:980px){.test-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.test-grid{grid-template-columns:1fr}}
+
+/* Cart page styles */
+.cart-section{padding:36px 20px 80px;max-width:1100px;margin:0 auto}
+.cart-grid{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+.cart-list-empty{padding:40px;text-align:center;color:rgba(255,255,255,0.8)}
+.cart-row{display:flex;align-items:center;gap:16px;padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+.cart-img{width:120px;height:120px;object-fit:cover;border-radius:10px}
+.cart-meta h4{margin:0;font-size:1.05rem}
+.cart-meta p{color:rgba(255,255,255,0.75);margin:6px 0}
+.cart-actions{margin-left:auto;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.cart-actions .qty-input{width:72px;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);color:#fff}
+.remove-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#ff9b9b;padding:6px 10px;border-radius:8px;cursor:pointer}
+.card h3{margin-top:0;color:#fff}
+.summary-line{display:flex;justify-content:space-between;padding:6px 0;color:rgba(255,255,255,0.9)}
+.summary-line.total{font-weight:800;font-size:1.1rem}
+.btn{background:#5EED7D;color:#102116;padding:12px 14px;border-radius:10px;border:none;cursor:pointer;width:100%}
+
+@media(max-width:880px){.cart-grid{grid-template-columns:1fr}.cart-actions{align-items:flex-start}.cart-row{flex-direction:row}}
+
+@media(max-width:560px){
+    .cart-row{flex-direction:column;align-items:flex-start}
+    .cart-price{margin-left:0;margin-top:8px}
+    .cart-controls{margin-left:0;margin-top:6px}
+    .trash{align-self:flex-end}
+}
+
+/* New visual style for cart rows (white cards like mock) */
+.cart-row.card{
+    background: #fff;
+    color: #102116;
+    border: none;
+    box-shadow: 0 14px 36px rgba(2,6,23,0.18);
+    border-radius: 12px;
+    padding: 18px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+.cart-row.card:last-child{margin-bottom:0}
+.img-wrap{background:#fff;padding:10px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 120px}
+.cart-img{width:96px;height:96px;object-fit:contain;border-radius:10px}
+.cart-meta{margin-left:8px}
+.cart-meta h4{font-size:1.1rem;margin:0 0 6px;font-weight:700;color:inherit}
+.cart-meta .muted{color:#8b8b8b;font-size:0.95rem}
+.cart-price{margin-left:auto;color:#102116;font-weight:800;font-size:1.4rem}
+.cart-controls{display:flex;align-items:center;gap:12px;margin-left:18px}
+.qty-plus,.qty-minus{background:#fff;border:1px solid rgba(0,0,0,0.08);width:44px;height:44px;border-radius:12px;cursor:pointer;font-size:20px;display:inline-flex;align-items:center;justify-content:center}
+.qty{min-width:34px;text-align:center;font-weight:700}
+.trash{position:absolute;right:18px;top:14px;background:transparent;border:none;color:#ff6b6b;font-size:18px;cursor:pointer}
+
+/* Order summary style to match mock */
+#cart-summary.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 20px 40px rgba(2,6,23,0.25);border:none}
+#cart-summary h3{color:#102116;margin-top:0}
+.summary-line{color:#6b6b6b}
+.summary-line.total{color:#102116;font-weight:800}
+.btn{background:#1f6b3a;color:#fff}
+.btn:hover{filter:brightness(.98)}
+
+/* Suggested products in cart page */
+.product-suggestions{margin-bottom:18px}
+.suggestions-inner{display:flex;gap:18px}
+.suggestion-card{width:220px;background:rgba(255,255,255,0.03);border-radius:12px;padding:0;overflow:hidden;border:1px solid rgba(255,255,255,0.04);box-sizing:border-box}
+.suggestion-thumb{background:#fff;padding:12px;border-radius:8px;margin:12px 12px 0 12px}
+.suggestion-thumb img{width:100%;height:auto;object-fit:contain;display:block}
+.suggestion-body{padding:8px 12px 18px;background:transparent;text-align:left}
+.suggestion-card .small{margin:0;font-size:1rem;color:#fff}
+.suggestion-card .muted{color:rgba(255,255,255,0.6);font-size:0.9rem}
+.suggestion-card .price{color:#5EED7D;font-weight:700;margin-top:8px}
+
+/* Responsive adjustments */
+@media (max-width:720px){
+    .hero h2{font-size:1.8rem}
+    .product-card img{height:140px}
+    #hero_bottles{width:90%;top:52%;transform:translate(-50%,-10%)}
+}
+
+@media (prefers-reduced-motion:reduce){
+    .bg-blobs .blob, .sale-badge, .btn{animation:none}
+}
+
+/* About section */
+.about{padding:36px 0}
+.about-card{max-width:900px;margin:0 auto;text-align:center}
+.about-card h3{color:#fff;margin-bottom:10px}
+.about-card p{color:rgba(255,255,255,0.8);line-height:1.6}
+.about-cta{margin-top:16px;display:flex;gap:12px;justify-content:center}
+.btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.08)}
+
+/* Categories */
+.categories{padding:30px 0}
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.cat img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+.cat h4{margin-top:10px;color:#fff}
+.cat p{color:rgba(255,255,255,0.75)}
+
+/* Testimonials */
+.testimonials{padding:30px 0}
+.test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.testimonial p{color:rgba(255,255,255,0.85);margin-bottom:8px}
+.testimonial strong{color:#ffd36b}
+
+/* Newsletter */
+.newsletter{padding:28px 0}
+.newsletter-card{max-width:760px;margin:0 auto;text-align:center}
+.newsletter-form{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.newsletter-form input{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff}
+.newsletter-form button{padding:10px 18px}
+
+@media (max-width:600px){
+    .about-cta,.newsletter-form{flex-direction:column}
+    .newsletter-form input{width:100%}
+}
+
+
+#whyh2{
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    color: #5EED7D;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+}
+
+#whyp{
+    color: rgba(255,255,255,0.8);
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: sans-serif;
+    text-align: center;
+    line-height: 1.6;
+    padding: 0 20px;
+}
+
+.testimonial p{
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 8px;
+    font-family: sans-serif;
+}
+.testimonial strong{
+    color: #ffd36b;
+}
+.testimonial{
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.banner_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+       width: 100%;
+       height: 400px;
+
+}
+
+.banner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    background-color: #5EED7D;
+    width: 90%;
+    height: 300px;
+}
+.banner h2{
+    font-size: 2.5rem;
+    color: #242A1F;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer_container{
+    background-color: #1C2218;
+    padding: 20px 40px;
+    margin-top: 40px;
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    box-sizing:border-box;
+}
+
+#left_logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    width: 240px;
+}
+
+#center_social{display:flex;gap:12px;align-items:center;justify-content:center}
+
+#right_info{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: flex-end;
+    gap:6px;
+    color: #dfe7dd;
+    min-width:220px;
+}
+
+/* smaller screens: stack footer content */
+@media(max-width:720px){
+  .footer_container{flex-direction:column;align-items:center;gap:12px;padding:20px}
+  #right_info{align-items:center;text-align:center}
+}
+.cart-row.card .cart-meta h4 { color: #102116; }
+
+.cart-section h2{
+    color: white;
+    font-family: 'League Spartan', sans-serif;
+}

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sustain Bottles — Sustainable Water Bottles</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="products.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Joti+One&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Animated background blobs (pure CSS) -->
+    <div class="bg-blobs" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+      <span class="blob b4"></span>
+    </div>
+    <header class="site-header">
+      <div class="header-container">
+        <div id="logo">
+        <h1 class="brand">Gosus</h1>
+        <img src="Images/leaf.png" alt="Leaf Logo" width="200" height="100">
+        </div>
+
+        <div class="navdiv">
+        <nav>
+          <a href="cart.html">Cart</a>
+          <a href="products.html">Products</a>
+          <a href="contact.html">Contact</a>
+          <a href="login.html" id="login-link">Login</a>
+          <a href="signup.html" id="signup-link">Sign up</a>
+          <a href="#admin" id="admin-link">Admin</a>
+        </nav>
+
+        </div>
+        </div>
+    
+    </header>
+
+    <main class="container">
+      <section id="hero" class="hero">
+        <h2>Our Products !</h2>
+
+    <div class="fstrow">
+      
+        <img id="orange_b" src="Images/orangeframe.png" alt="bottle image" width="257" height="300">
+      <img id="green_b" src="Images/greenframe.png" alt="bottle image" width="257" height="300">
+      <img id="blue_b" src="Images/blueframe.png" alt="bottle image" width="257" height="300">
+    </div>
+
+      <div class="fstrow">
+      
+        <img id="orange_b" src="Images/woodframe.png" alt="bottle image" width="257" height="300">
+      <img id="green_b" src="Images/rainbowframe.png" alt="bottle image" width="257" height="300">
+      <img id="blue_b" src="Images/clayframe.png" alt="bottle image" width="257" height="300">
+    </div>
+       
+       
+
+      
+
+
+      </section>
+
+        <!-- Toast notification container -->
+        <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+
+
+    
+
+    <script>
+      // Simple toast and cart counter logic
+      (function(){
+        const container = document.getElementById('toast-container');
+        function showToast(msg){
+          const t = document.createElement('div');
+          t.className = 'toast';
+          t.textContent = msg;
+          container.appendChild(t);
+          requestAnimationFrame(()=> t.classList.add('visible'));
+          setTimeout(()=>{ t.classList.remove('visible'); setTimeout(()=> t.remove(),300); }, 2500);
+        }
+
+        function addToCart(id, title){
+          const cart = JSON.parse(localStorage.getItem('cart')||'[]');
+          cart.push({id,title,addedAt:Date.now()});
+          localStorage.setItem('cart', JSON.stringify(cart));
+          showToast('Item added to cart');
+        }
+
+        document.querySelectorAll('.fstrow img').forEach(img=>{
+          img.style.cursor = 'pointer';
+          img.addEventListener('click', ()=> addToCart(img.id || img.src, img.alt || 'Product'));
+        });
+
+  // no cart counter; only toast notification
+      })();
+    </script>
+  <script src="main.js"></script>
+  </body>
+</html>
