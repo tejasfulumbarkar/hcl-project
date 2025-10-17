@@ -24,7 +24,37 @@
         <h2>Your cart</h2>
         <div class="cart-grid">
           <div>
-            <div id="cart-list">Loading cart...</div>
+            <div id="cart-list">
+              <!-- Static fallback: two demo items so the cart shows even if JS fails -->
+              <div class="cart-row card" data-idx="0">
+                <div class="img-wrap"><img src="Images/greenb.png" alt="Forest Bottle" class="cart-img" /></div>
+                <div class="cart-meta">
+                  <h4>Forest Bottle</h4>
+                  <div class="muted">Forest Green</div>
+                </div>
+                <div class="cart-price">$24.99</div>
+                <div class="cart-controls">
+                  <button class="qty-minus" data-idx="0">−</button>
+                  <span class="qty">1</span>
+                  <button class="qty-plus" data-idx="0">＋</button>
+                </div>
+                <button class="trash" data-idx="0" aria-label="Remove">🗑️</button>
+              </div>
+              <div class="cart-row card" data-idx="1">
+                <div class="img-wrap"><img src="Images/orangeb.png" alt="Sunset Bottle" class="cart-img" /></div>
+                <div class="cart-meta">
+                  <h4>Sunset Bottle</h4>
+                  <div class="muted">Coral Orange</div>
+                </div>
+                <div class="cart-price">$29.50</div>
+                <div class="cart-controls">
+                  <button class="qty-minus" data-idx="1">−</button>
+                  <span class="qty">1</span>
+                  <button class="qty-plus" data-idx="1">＋</button>
+                </div>
+                <button class="trash" data-idx="1" aria-label="Remove">🗑️</button>
+              </div>
+            </div>
           </div>
           <aside id="cart-summary" class="card" style="display:none">
             <h3>Order summary</h3>
@@ -43,50 +73,133 @@
     (function(){
       function formatMoney(n){return n.toFixed(2)}
       const cartKey = 'cart';
-      let cart = JSON.parse(localStorage.getItem(cartKey)||'[]');
-      if (!cart || cart.length===0) {
+      let cart = [];
+      // read raw to detect if it's the first visit (null) vs empty array
+      const raw = localStorage.getItem(cartKey);
+      const isFirstVisit = raw === null;
+      try {
+        cart = JSON.parse(raw || '[]') || [];
+      } catch (e) {
+        console.warn('Invalid cart data in localStorage, resetting', e);
+        cart = [];
+        localStorage.removeItem(cartKey);
+      }
+
+      // ensure prices are numbers; provide defaults for known demo items
+      const DEFAULT_PRICES = { 'prod-1': 24.99, 'prod-2': 29.50 };
+      // Only seed defaults on first visit (when cartKey was not present). Don't reseed on refresh.
+      if (isFirstVisit && (!cart || cart.length === 0)) {
         cart = [
-          {id:'prod-1', title:'Forest Bottle', price:24.99, qty:1, img:'Images/greenb.png'},
-          {id:'prod-2', title:'Sunset Bottle', price:29.50, qty:1, img:'Images/orangeb.png'},
+          {id:'prod-1', title:'Forest Bottle', price:DEFAULT_PRICES['prod-1'], qty:1, img:'Images/greenb.png'},
+          {id:'prod-2', title:'Sunset Bottle', price:DEFAULT_PRICES['prod-2'], qty:1, img:'Images/orangeb.png'},
         ];
         localStorage.setItem(cartKey, JSON.stringify(cart));
       }
 
+      // normalize prices and qty to safe numbers but don't override a valid existing qty
+      cart = cart.map((it, idx) => ({
+        id: it.id || ('prod-'+(idx+1)),
+        title: it.title || 'Product',
+        img: it.img || '',
+        qty: (typeof it.qty !== 'undefined' && !Number.isNaN(Number(it.qty))) ? Number(it.qty) : 1,
+        price: (!Number.isNaN(Number(it.price)) && isFinite(Number(it.price))) ? Number(it.price) : (DEFAULT_PRICES[it.id] || 0),
+        variant: it.variant || ''
+      }));
+
+      // ensure every item has a sensible price: if still 0/NaN, fall back to demo defaults
+      cart.forEach((it, idx) => {
+        if (!isFinite(it.price) || it.price <= 0) {
+          it.price = DEFAULT_PRICES[it.id] || (idx === 0 ? 24.99 : (idx === 1 ? 29.50 : 19.99));
+        }
+      });
+
       const list = document.getElementById('cart-list');
       function render(){
+        // If there are no items at all, show the empty state and hide summary
         if (!cart.length) {
           list.innerHTML = '<div class="cart-list-empty"><h3>Your cart is empty</h3><p>Looks like you haven\'t added anything yet.</p><p><a href="products.html" class="btn" style="display:inline-block;margin-top:10px">Browse products</a></p></div>';
           document.getElementById('cart-summary').style.display='none';
-          return
+          return;
         }
+
+        // Show summary if there are items
         document.getElementById('cart-summary').style.display='block';
-        list.innerHTML = cart.map((it, idx)=>`
-          <div class="cart-row card" data-idx="${idx}">
-            <div class="img-wrap"><img src="${it.img}" alt="${it.title}" class="cart-img" /></div>
-            <div class="cart-meta">
-              <h4>${it.title}</h4>
-              <div class="muted">Coral Orange</div>
-            </div>
-            <div class="cart-price">$${formatMoney(it.price)}</div>
-            <div class="cart-controls">
-              <button class="qty-minus" data-idx="${idx}">−</button>
-              <span class="qty">${it.qty}</span>
-              <button class="qty-plus" data-idx="${idx}">＋</button>
-            </div>
-            <button class="trash" data-idx="${idx}" aria-label="Remove">🗑️</button>
-          </div>
-        `).join('');
 
-        document.querySelectorAll('.qty-plus').forEach(b=> b.addEventListener('click', e=>{ const i=parseInt(e.target.dataset.idx,10); cart[i].qty = (cart[i].qty||1)+1; saveAndRender(); }));
-        document.querySelectorAll('.qty-minus').forEach(b=> b.addEventListener('click', e=>{ const i=parseInt(e.target.dataset.idx,10); cart[i].qty = Math.max(1,(cart[i].qty||1)-1); saveAndRender(); }));
-        document.querySelectorAll('.trash').forEach(b=> b.addEventListener('click', e=>{ const i=parseInt(e.target.dataset.idx,10); cart.splice(i,1); saveAndRender(); }));
+        // If static fallback rows exist in the DOM (from server/static HTML), update them instead of overwriting
+        const existingRows = list.querySelectorAll('.cart-row');
+        if (existingRows && existingRows.length) {
+          existingRows.forEach((row, idx) => {
+            const it = cart[idx];
+            if (!it) { row.style.display = 'none'; return; }
+            // update image, title, price and qty
+            const img = row.querySelector('.cart-img'); if (img) { img.src = it.img || img.src; img.alt = it.title || img.alt; }
+            const titleEl = row.querySelector('.cart-meta h4'); if (titleEl) titleEl.textContent = it.title || titleEl.textContent;
+            const muted = row.querySelector('.cart-meta .muted'); if (muted) muted.textContent = it.variant || muted.textContent;
+            const priceEl = row.querySelector('.cart-price'); if (priceEl) priceEl.textContent = '$' + formatMoney(it.price || 0);
+            const qtyEl = row.querySelector('.qty'); if (qtyEl) qtyEl.textContent = it.qty || 1;
+            // ensure control buttons have correct data-idx
+            row.querySelectorAll('.qty-plus, .qty-minus, .trash').forEach(btn => btn.dataset.idx = idx);
+          });
+          // (delegated handlers are attached once below) do not attach per-button listeners here
+        } else {
+          // no existing rows — build from data (original behavior)
+          list.innerHTML = cart.map((it, idx)=>`
+            <div class="cart-row card" data-idx="${idx}">
+              <div class="img-wrap"><img src="${it.img}" alt="${it.title}" class="cart-img" /></div>
+              <div class="cart-meta">
+                <h4>${it.title}</h4>
+                <div class="muted">${it.variant || 'Coral Orange'}</div>
+              </div>
+              <div class="cart-price">$${formatMoney(it.price)}</div>
+              <div class="cart-controls">
+                <button class="qty-minus" data-idx="${idx}">−</button>
+                <span class="qty">${it.qty}</span>
+                <button class="qty-plus" data-idx="${idx}">＋</button>
+              </div>
+              <button class="trash" data-idx="${idx}" aria-label="Remove">🗑️</button>
+            </div>
+          `).join('');
 
-        const total = cart.reduce((s,it)=> s + it.price * (it.qty||1), 0);
+          // no per-button handlers here; we'll handle via delegation below
+        }
+
+  const total = cart.reduce((s,it)=> s + (Number(it.price) || 0) * (Number(it.qty) || 0), 0);
         document.getElementById('cart-total').textContent = formatMoney(total);
         document.getElementById('cart-total-dup').textContent = formatMoney(total);
       }
       function saveAndRender(){ localStorage.setItem(cartKey, JSON.stringify(cart)); render(); }
       render();
+
+      // Attach a single delegated click handler to the list (prevents handler stacking on re-render)
+      if (!list._delegationAttached) {
+        list.addEventListener('click', function(e){
+          const plus = e.target.closest('.qty-plus');
+          const minus = e.target.closest('.qty-minus');
+          const trash = e.target.closest('.trash');
+          if (plus) {
+            const i = parseInt(plus.dataset.idx, 10);
+            if (!Number.isFinite(i)) return;
+            cart[i].qty = (Number(cart[i].qty) || 0) + 1;
+            saveAndRender();
+            return;
+          }
+          if (minus) {
+            const i = parseInt(minus.dataset.idx, 10);
+            if (!Number.isFinite(i)) return;
+            cart[i].qty = Math.max(1, (Number(cart[i].qty) || 1) - 1);
+            saveAndRender();
+            return;
+          }
+          if (trash) {
+            const i = parseInt(trash.dataset.idx, 10);
+            if (!Number.isFinite(i)) return;
+            cart.splice(i,1);
+            saveAndRender();
+            return;
+          }
+        });
+        list._delegationAttached = true;
+      }
 
       // no add-suggestion buttons on this page
 
