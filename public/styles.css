@@ -422,6 +422,7 @@ nav a {
     align-items: center;
     border-radius: 50px;
     background-color: #5EED7D;
+    border: 2px solid white;
     width: 90%;
     height: 300px;
 }
